@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>AyudaMineduc - Certificados</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <style>
+        /* Reset básico */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #fff;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* CABECERA TIPO FOTO */
+        .header-mobile {
+            padding: 15px 20px;
+            background: white;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .azul-claro { color: #0072bc; } /* Azul Ayuda */
+        .rojo-bold { color: #e30613; font-weight: 900; } /* Rojo Mineduc */
+
+        .titulo-principal {
+            font-size: 20px;
+            color: #0072bc;
+            font-weight: normal;
+            margin-bottom: 5px;
+        }
+
+        .subtitulo {
+            font-size: 16px;
+            color: #0072bc;
+            font-weight: normal;
+            margin-bottom: 15px;
+        }
+
+        /* CONTENEDOR GRIS (La caja de fondo de la foto) */
+        .contenedor-gris {
+            background-color: #f0f0f0; /* Gris claro de la foto */
+            padding: 20px;
+            border-radius: 8px;
+            margin: 0 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .texto-instruccion {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+
+        .texto-instruccion strong {
+            color: #555;
+            font-weight: bold;
+        }
+
+        /* TARJETA BLANCA FLOTANTE (Donde va el recaptcha) */
+        .tarjeta-blanca {
+            background-color: white;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+            text-align: center;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Input estilizado para que no desentone */
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        /* Botón Validar */
+        button {
+            background-color: #0072bc;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #005a9c;
+        }
+
+        /* Footer */
+        .footer-info {
+            margin-top: auto; /* Empuja el footer al final */
+            padding: 20px;
+            font-size: 12px;
+            color: #777;
+            line-height: 1.5;
+        }
+
+        .footer-info a {
+            color: #0072bc;
+            text-decoration: none;
+        }
+
+        /* Mensajes de error y éxito */
+        .error {
+            color: #d9534f;
+            background-color: #f2dede;
+            border: 1px solid #ebccd1;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 14px;
+            display: none;
+        }
+
+        #resultado-vista {
+            display: none;
+            padding: 20px;
+        }
+
+        /* Visor PDF */
+        #pdf-visor {
+            background: #333;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+        
+        #pdf-link {
+            display: inline-block;
+            margin-top: 10px;
+            background: #17a2b8;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        /* Ajuste para pantallas pequeñas */
+        @media (max-width: 380px) {
+            .g-recaptcha {
+                transform: scale(0.85);
+                transform-origin: 0 0;
+            }
+        }
+    </style>
+    
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+
+<body>
+
+    <div class="header-mobile">
+        <div class="logo-text">
+            <span class="azul-claro">Ayuda</span><span class="rojo-bold">Mineduc</span>
+        </div>
+        <div class="titulo-principal">Certificados en tu Celular</div>
+        <div class="subtitulo">Validación de Certificado</div>
+    </div>
+
+    <div id="formulario-vista">
+        
+        <div class="contenedor-gris">
+            <p class="texto-instruccion">
+                <strong>Estimado Usuario(a):</strong> Ingrese el folio y complete el desafío Recaptcha para continuar hacia la validación del certificado.
+            </p>
+
+            <input type="text" id="codigoInput" placeholder="Ingrese Folio (Ej: NS1234)">
+
+            <div class="tarjeta-blanca">
+                <div class="g-recaptcha" data-sitekey="6LfD0QIsAAAAAETzSL_GyI4nvJ_YIj5hBpjQ_wFh"></div>
+            </div>
+
+            <button type="button" onclick="verificarCodigo()">Validar Certificado</button>
+            
+            <div id="resultado-error" class="error"></div>
+        </div>
+
+    </div>
+
+    <div id="resultado-vista">
+        <div class="header-mobile" style="padding-left:0; padding-right:0;">
+            <h2 style="color: #0f5132;">¡Certificado Válido!</h2>
+            <p style="margin-top:10px;">El Ministerio de Educación confirma que el documento es válido.</p>
+        </div>
+
+        <div id="pdf-visor">
+            <p>Visualización del Documento</p>
+            <a id="pdf-link" href="#" target="_blank">Abrir PDF Original</a>
+        </div>
+
+        <button onclick="mostrarVista('formulario-vista')" style="background-color: #6c757d; margin-top: 20px;">Volver</button>
+    </div>
+
+    <div class="footer-info">
+        Ministerio de Educación<br>
+        <a href="#">Gobierno de Chile</a><br>
+        Dirección: Av. Libertador Bernardo O'Higgins 1371.<br>
+        Teléfono: +56 2 24066000<br>
+        Versión 1.37.0
+    </div>
+
+    <script>
+        // --- TU BASE DE DATOS ---
+        const misCertificados = [
+            { folio: "NS1234", pdf_url: "https://ejemplo.com/juan.pdf" },
+            { folio: "d12b701b-33e1-4738-8ede-8787d39f1560", pdf_url: "https://udlaverificacion.github.io/Validaciondecertificados/danielarozasgonzalez.pdf" }
+        ];
+
+        function mostrarVista(vistaId) {
+            document.getElementById('formulario-vista').style.display = 'none';
+            document.getElementById('resultado-vista').style.display = 'none';
+            document.getElementById(vistaId).style.display = 'block';
+            document.getElementById('resultado-error').style.display = 'none';
+        }
+
+        function verificarCodigo() {
+            let inputUsuario = document.getElementById("codigoInput").value.trim().toUpperCase();
+            let mensajeErrorDiv = document.getElementById("resultado-error");
+            
+            mensajeErrorDiv.style.display = 'none';
+
+            // 1. Validar Input vacío
+            if (inputUsuario === "") {
+                mostrarError("Por favor, ingrese un folio.");
+                return;
+            }
+
+            // 2. Validar Recaptcha
+            // NOTA: Si estás probando en local sin servidor, esto puede dar error.
+            // Si te da problemas al probar, comenta las siguientes 4 líneas:
+            let recaptchaResponse = grecaptcha.getResponse();
+            if (recaptchaResponse.length === 0) {
+               mostrarError("Por favor, complete el 'No soy un robot'.");
+               return;
+            }
+
+            // 3. Buscar Folio
+            let certificado = misCertificados.find(c => c.folio.toUpperCase() === inputUsuario);
+
+            if (certificado) {
+                document.getElementById("pdf-link").href = certificado.pdf_url;
+                mostrarVista('resultado-vista');
+            } else {
+                mostrarError("El código ingresado no se encontró o no es correcto.");
+            }
+        }
+
+        function mostrarError(msg) {
+            let div = document.getElementById("resultado-error");
+            div.innerHTML = msg;
+            div.style.display = 'block';
+        }
+
+        // Iniciar
+        document.addEventListener('DOMContentLoaded', () => {
+             mostrarVista('formulario-vista');
+        });
+    </script>
+
+</body>
+</html>
