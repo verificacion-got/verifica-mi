@@ -1,290 +1,156 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>AyudaMineduc - Certificados</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validación de Certificado - Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Reset básico */
-        * {
-            box-sizing: border-box;
+        /* ESTILOS GENERALES */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: #fff;
+            background-color: #f9f9f9;
             color: #333;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* CABECERA TIPO FOTO */
-        .header-mobile {
-            padding: 15px 20px;
-            background: white;
-        }
-
-        .logo-text {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .azul-claro { color: #0072bc; } /* Azul Ayuda */
-        .rojo-bold { color: #e30613; font-weight: 900; } /* Rojo Mineduc */
-
-        .titulo-principal {
-            font-size: 20px;
-            color: #0072bc;
-            font-weight: normal;
-            margin-bottom: 5px;
-        }
-
-        .subtitulo {
-            font-size: 16px;
-            color: #0072bc;
-            font-weight: normal;
-            margin-bottom: 15px;
-        }
-
-        /* CONTENEDOR GRIS (La caja de fondo de la foto) */
-        .contenedor-gris {
-            background-color: #f0f0f0; /* Gris claro de la foto */
-            padding: 20px;
-            border-radius: 8px;
-            margin: 0 15px;
-            border: 1px solid #e0e0e0;
-        }
-
-        .texto-instruccion {
-            color: #666;
-            font-size: 15px;
-            line-height: 1.4;
-            margin-bottom: 20px;
-        }
-
-        .texto-instruccion strong {
-            color: #555;
-            font-weight: bold;
-        }
-
-        /* TARJETA BLANCA FLOTANTE (Donde va el recaptcha) */
-        .tarjeta-blanca {
-            background-color: white;
-            padding: 15px;
-            border-radius: 6px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
-            text-align: center;
-            margin-bottom: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Input estilizado para que no desentone */
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-
-        /* Botón Validar */
-        button {
-            background-color: #0072bc;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-
-        button:hover {
-            background-color: #005a9c;
-        }
-
-        /* Footer */
-        .footer-info {
-            margin-top: auto; /* Empuja el footer al final */
-            padding: 20px;
-            font-size: 12px;
-            color: #777;
             line-height: 1.5;
         }
 
-        .footer-info a {
-            color: #0072bc;
-            text-decoration: none;
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Mensajes de error y éxito */
-        .error {
-            color: #d9534f;
-            background-color: #f2dede;
-            border: 1px solid #ebccd1;
-            padding: 10px;
-            border-radius: 4px;
-            margin-top: 10px;
-            font-size: 14px;
-            display: none;
+        /* Header */
+        .header {
+            padding: 15px 20px;
+            background: #fff;
+            border-bottom: 1px solid #eee;
         }
 
-        #resultado-vista {
-            display: none;
+        .logo-text { font-size: 1.5rem; margin: 0; }
+        .logo-blue { color: #0056b3; font-weight: normal; }
+        .logo-red { color: #d9534f; font-weight: bold; }
+
+        .page-title {
+            color: #0056b3;
+            font-size: 1.3rem;
+            margin: 5px 0 15px 0;
+            font-weight: normal;
+        }
+
+        .section-subtitle {
+            color: #0056b3;
+            font-size: 1.1rem;
+            margin: 0;
+            font-weight: normal;
+        }
+
+        /* Caja de ingreso */
+        .login-box {
+            background-color: #f2f2f2;
+            margin: 20px;
             padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        /* Visor PDF */
-        #pdf-visor {
-            background: #333;
+        .login-intro {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        /* Botón Validar */
+        .btn-validate {
+            display: block;
+            width: 100%;
+            background-color: #0056b3;
             color: white;
-            padding: 40px 20px;
             text-align: center;
-            margin-top: 20px;
+            padding: 12px 0;
             border-radius: 4px;
-        }
-        
-        #pdf-link {
-            display: inline-block;
-            margin-top: 10px;
-            background: #17a2b8;
-            color: white;
-            padding: 10px 20px;
             text-decoration: none;
-            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
         }
 
-        /* Ajuste para pantallas pequeñas */
-        @media (max-width: 380px) {
-            .g-recaptcha {
-                transform: scale(0.85);
-                transform-origin: 0 0;
-            }
+        .btn-validate:hover {
+            background-color: #004494;
+        }
+
+        /* Footer */
+        .footer-simple-text {
+            padding: 20px 15px;
+            font-size: 0.9rem;
+            color: #777;
+            background: #f9f9f9;
+            margin-top: auto;
         }
     </style>
-    
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
-
 <body>
 
-    <div class="header-mobile">
-        <div class="logo-text">
-            <span class="azul-claro">Ayuda</span><span class="rojo-bold">Mineduc</span>
+    <div class="container">
+        <div class="header">
+            <h1 class="logo-text">
+                <span class="logo-blue">Ayuda</span><span class="logo-red">Mineduc</span>
+            </h1>
+            <h2 class="page-title">Certificados en tu Celular</h2>
+            <h3 class="section-subtitle">Validación de Certificado</h3>
         </div>
-        <div class="titulo-principal">Certificados en tu Celular</div>
-        <div class="subtitulo">Validación de Certificado</div>
-    </div>
 
-    <div id="formulario-vista">
-        
-        <div class="contenedor-gris">
-            <p class="texto-instruccion">
-                <strong>Estimado Usuario(a):</strong> Ingrese el folio y complete el desafío Recaptcha para continuar hacia la validación del certificado.
+        <div class="login-box">
+            <p class="login-intro">
+                <strong>Estimado Usuario(a):</strong> Ingrese el folio para continuar hacia la validación del certificado.
             </p>
 
-            <input type="text" id="codigoInput" placeholder="Ingrese Folio (Ej: NS1234)">
+            <input type="text" id="inputFolio" class="input-field" placeholder="Ingrese Folio (Ej: NS1234)">
 
-            <div class="tarjeta-blanca">
-                <div class="g-recaptcha" data-sitekey="6LfD0QIsAAAAAETzSL_GyI4nvJ_YIj5hBpjQ_wFh"></div>
-            </div>
-
-            <button type="button" onclick="verificarCodigo()">Validar Certificado</button>
-            
-            <div id="resultado-error" class="error"></div>
+            <button onclick="validarFolio()" class="btn-validate">
+                Validar Certificado
+            </button>
         </div>
 
-    </div>
-
-    <div id="resultado-vista">
-        <div class="header-mobile" style="padding-left:0; padding-right:0;">
-            <h2 style="color: #0f5132;">¡Certificado Válido!</h2>
-            <p style="margin-top:10px;">El Ministerio de Educación confirma que el documento es válido.</p>
+        <div class="footer-simple-text">
+            Ministerio de Educación<br>
+            Gobierno de Chile
         </div>
-
-        <div id="pdf-visor">
-            <p>Visualización del Documento</p>
-            <a id="pdf-link" href="#" target="_blank">Abrir PDF Original</a>
-        </div>
-
-        <button onclick="mostrarVista('formulario-vista')" style="background-color: #6c757d; margin-top: 20px;">Volver</button>
-    </div>
-
-    <div class="footer-info">
-        Ministerio de Educación<br>
-        <a href="#">Gobierno de Chile</a><br>
-        Dirección: Av. Libertador Bernardo O'Higgins 1371.<br>
-        Teléfono: +56 2 24066000<br>
-        Versión 1.37.0
     </div>
 
     <script>
-        // --- TU BASE DE DATOS ---
-        const misCertificados = [
-            { folio: "NS1234", pdf_url: "https://ejemplo.com/juan.pdf" },
-            { folio: "d12b701b-33e1-4738-8ede-8787d39f1560", pdf_url: "https://udlaverificacion.github.io/Validaciondecertificados/danielarozasgonzalez.pdf" }
-        ];
-
-        function mostrarVista(vistaId) {
-            document.getElementById('formulario-vista').style.display = 'none';
-            document.getElementById('resultado-vista').style.display = 'none';
-            document.getElementById(vistaId).style.display = 'block';
-            document.getElementById('resultado-error').style.display = 'none';
-        }
-
-        function verificarCodigo() {
-            let inputUsuario = document.getElementById("codigoInput").value.trim().toUpperCase();
-            let mensajeErrorDiv = document.getElementById("resultado-error");
+        function validarFolio() {
+            // 1. Obtener el valor escrito
+            var textoIngresado = document.getElementById("inputFolio").value;
             
-            mensajeErrorDiv.style.display = 'none';
+            // El código correcto
+            var codigoCorrecto = "49478545-4d32-46e5-aaa2-55ef65f4f257";
 
-            // 1. Validar Input vacío
-            if (inputUsuario === "") {
-                mostrarError("Por favor, ingrese un folio.");
-                return;
-            }
-
-            // 2. Validar Recaptcha
-            // NOTA: Si estás probando en local sin servidor, esto puede dar error.
-            // Si te da problemas al probar, comenta las siguientes 4 líneas:
-            let recaptchaResponse = grecaptcha.getResponse();
-            if (recaptchaResponse.length === 0) {
-               mostrarError("Por favor, complete el 'No soy un robot'.");
-               return;
-            }
-
-            // 3. Buscar Folio
-            let certificado = misCertificados.find(c => c.folio.toUpperCase() === inputUsuario);
-
-            if (certificado) {
-                document.getElementById("pdf-link").href = certificado.pdf_url;
-                mostrarVista('resultado-vista');
+            // 2. Comprobar si son iguales (usamos trim() para borrar espacios accidentales)
+            if (textoIngresado.trim() === codigoCorrecto) {
+                // SI ES CORRECTO: Ir a la otra página
+                window.location.href = "resultadomine.html";
             } else {
-                mostrarError("El código ingresado no se encontró o no es correcto.");
+                // SI ES INCORRECTO: Mostrar error
+                alert("El folio ingresado no es válido o no existe.");
             }
         }
-
-        function mostrarError(msg) {
-            let div = document.getElementById("resultado-error");
-            div.innerHTML = msg;
-            div.style.display = 'block';
-        }
-
-        // Iniciar
-        document.addEventListener('DOMContentLoaded', () => {
-             mostrarVista('formulario-vista');
-        });
     </script>
 
 </body>
